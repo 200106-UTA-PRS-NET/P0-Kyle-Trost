@@ -6,7 +6,7 @@ namespace PizzaBox.Domain.Interfaces
 {
     public interface IUserRepository<T>
     {
-        IEnumerable<T> GetUsers();
+        IEnumerable<T> GetUsers(string user = null, string pass = null);
         void AddUser(T user);
         void ModifyUser(T user);
         void RemoveUser(int id);

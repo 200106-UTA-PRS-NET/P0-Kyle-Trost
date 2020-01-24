@@ -17,6 +17,7 @@ namespace PizzaBox.Domain.Abstracts
         public int? StoreId { get; set; }
         public int? UserId { get; set; }
         public decimal? TotalCost { get; set; }
+        public DateTime? OrderTimestamp { get; set; }
 
         public virtual Stores Store { get; set; }
         public virtual Users User { get; set; }

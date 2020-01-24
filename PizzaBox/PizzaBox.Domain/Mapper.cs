@@ -41,7 +41,8 @@ namespace PizzaBox.Domain
                 PizzasSold = order.PizzasSold,
                 Store = order.Store,
                 StoreId = order.StoreId,
-                TotalCost = order.TotalCost
+                TotalCost = order.TotalCost,
+                OrderTimestamp = order.OrderTimestamp
             };
         }
 
@@ -55,7 +56,8 @@ namespace PizzaBox.Domain
                 PizzasSold = order.PizzasSold,
                 Store = order.Store,
                 StoreId = order.StoreId,
-                TotalCost = order.TotalCost
+                TotalCost = order.TotalCost,
+                OrderTimestamp = order.OrderTimestamp
             };
         }
         #endregion
@@ -163,7 +165,8 @@ namespace PizzaBox.Domain
             {
                 UserId = user.UserId,
                 UserName = user.UserName,
-                UserPass = user.UserPass
+                UserPass = user.UserPass,
+                StoreId = user.StoreId
             };
         }
 
@@ -173,7 +176,8 @@ namespace PizzaBox.Domain
             {
                 UserId = user.UserId,
                 UserName = user.UserName,
-                UserPass = user.UserPass
+                UserPass = user.UserPass,
+                StoreId = user.StoreId
             };
         }
         #endregion

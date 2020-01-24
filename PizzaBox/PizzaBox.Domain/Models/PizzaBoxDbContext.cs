@@ -28,7 +28,7 @@ namespace PizzaBox.Domain.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=KYLE\\SQLEXPRESS01; Database=PizzaBoxDb; Trusted_Connection = true");
+                optionsBuilder.UseSqlServer("Server=KYLE\\SQLEXPRESS01; Database=PizzaBoxDb; Trusted_Connection=true;");
             }
         }
 
@@ -61,11 +61,16 @@ namespace PizzaBox.Domain.Models
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__Orders__0809335D1D927847");
+                    .HasName("PK__Orders__0809335DA2359090");
 
                 entity.ToTable("Orders", "PizzaBox");
 
                 entity.Property(e => e.OrderId).HasColumnName("orderId");
+
+                entity.Property(e => e.OrderTimestamp)
+                    .HasColumnName("orderTimestamp")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.StoreId).HasColumnName("storeId");
 
@@ -78,33 +83,30 @@ namespace PizzaBox.Domain.Models
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.StoreId)
-                    .HasConstraintName("FK__Orders__storeId__619B8048");
+                    .HasConstraintName("FK__Orders__storeId__14270015");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Orders__userId__628FA481");
+                    .HasConstraintName("FK__Orders__userId__151B244E");
             });
 
             modelBuilder.Entity<PizzasSold>(entity =>
             {
-                entity.HasKey(e => e.PizzaName)
-                    .HasName("PK__tmp_ms_x__63B38F7AA1F65B6D");
+                entity.HasKey(e => e.PizzaId)
+                    .HasName("PK__PizzasSo__4D4C90EFFA752A97");
 
                 entity.ToTable("PizzasSold", "PizzaBox");
 
-                entity.HasIndex(e => e.PizzaName)
-                    .HasName("UQ__tmp_ms_x__63B38F7BCEF8B123")
-                    .IsUnique();
-
-                entity.Property(e => e.PizzaName)
-                    .HasColumnName("pizzaName")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.PizzaId).HasColumnName("pizzaId");
 
                 entity.Property(e => e.OrderId).HasColumnName("orderId");
 
                 entity.Property(e => e.PizzaCrust).HasColumnName("pizzaCrust");
+
+                entity.Property(e => e.PizzaName)
+                    .HasColumnName("pizzaName")
+                    .IsUnicode(false);
 
                 entity.Property(e => e.PizzaSize).HasColumnName("pizzaSize");
 
@@ -115,17 +117,17 @@ namespace PizzaBox.Domain.Models
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.PizzasSold)
                     .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__PizzasSol__order__6FE99F9F");
+                    .HasConstraintName("FK__PizzasSol__order__18EBB532");
 
                 entity.HasOne(d => d.PizzaCrustNavigation)
                     .WithMany(p => p.PizzasSold)
                     .HasForeignKey(d => d.PizzaCrust)
-                    .HasConstraintName("FK__PizzasSol__pizza__70DDC3D8");
+                    .HasConstraintName("FK__PizzasSol__pizza__1AD3FDA4");
 
                 entity.HasOne(d => d.PizzaSizeNavigation)
                     .WithMany(p => p.PizzasSold)
                     .HasForeignKey(d => d.PizzaSize)
-                    .HasConstraintName("FK__PizzasSol__pizza__71D1E811");
+                    .HasConstraintName("FK__PizzasSol__pizza__19DFD96B");
             });
 
             modelBuilder.Entity<PresetPizzas>(entity =>
@@ -183,15 +185,17 @@ namespace PizzaBox.Domain.Models
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__Users__CB9A1CFF11FB28D5");
+                    .HasName("PK__Users__CB9A1CFF96364131");
 
                 entity.ToTable("Users", "PizzaBox");
 
                 entity.HasIndex(e => e.UserName)
-                    .HasName("UQ__Users__66DCF95C2F16168A")
+                    .HasName("UQ__Users__66DCF95C27629808")
                     .IsUnique();
 
                 entity.Property(e => e.UserId).HasColumnName("userId");
+
+                entity.Property(e => e.StoreId).HasColumnName("storeId");
 
                 entity.Property(e => e.UserName)
                     .IsRequired()

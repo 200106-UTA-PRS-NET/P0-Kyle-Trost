@@ -9,7 +9,7 @@ using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Storing.Repositories
 {
-    class SizeRepository : ISizeRepository<Size>
+    public class SizeRepository : ISizeRepository<Size>
     {
         PizzaBoxDbContext db;
 
@@ -38,10 +38,21 @@ namespace PizzaBox.Storing.Repositories
                 Console.WriteLine($"Size {size.SizeName} added successfully");
             }
         }
-        public IEnumerable<Size> GetSizes()
+        public IEnumerable<Size> GetSizes(int sizeId)
         {
-            var query = from s in db.Sizes
+            IQueryable<Size> query;
+
+            if (sizeId != -1)
+            {
+                 query = from s in db.Sizes
+                         where s.SizeId == sizeId
+                         select Mapper.MapSize(s);
+            }
+            else
+            {
+                query = from s in db.Sizes
                         select Mapper.MapSize(s);
+            }
 
             return query;
         }

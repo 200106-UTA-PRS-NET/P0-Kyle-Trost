@@ -16,6 +16,7 @@ namespace PizzaBox.Domain.Abstracts
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string UserPass { get; set; }
+        public int? StoreId { get; set; }
 
         public virtual ICollection<Orders> Orders { get; set; }
     }

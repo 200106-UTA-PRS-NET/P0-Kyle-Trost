@@ -21,7 +21,44 @@ namespace PizzaBox.Client
             var optionsBuilder = new DbContextOptionsBuilder<PizzaBoxDbContext>();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("PizzaBoxDb"));
             var options = optionsBuilder.Options;
-            /*var db =*/ return new PizzaBoxDbContext(options);
+            /*var db =*/
+            return new PizzaBoxDbContext(options);
+        }
+
+        public static ICrustTypeRepository<CrustType> CreateCrustTypeRepository()
+        {
+            var db = GetDbContext();
+            return new CrustTypeRepository(db);
+        }
+
+        public static IOrderRepository<Order> CreateOrderRepository()
+        {
+            var db = GetDbContext();
+            return new OrderRepository(db);
+        }
+
+        public static IPizzasSoldRepository<PizzaSold> CreatePizzasSoldRepository()
+        {
+            var db = GetDbContext();
+            return new PizzasSoldRepository(db);
+        }
+
+        public static IPresetPizzaRepository<PresetPizza> CreatePresetPizzaRespository()
+        {
+            var db = GetDbContext();
+            return new PresetPizzaRepository(db);
+        }
+
+        public static ISizeRepository<Size> CreateSizeRepository()
+        {
+            var db = GetDbContext();
+            return new SizeRepository(db);
+        }
+
+        public static IStoreRepository<Store> CreateStoreRepository()
+        {
+            var db = GetDbContext();
+            return new StoreRepository(db);
         }
 
         public static IUserRepository<User> CreateUserRepository()

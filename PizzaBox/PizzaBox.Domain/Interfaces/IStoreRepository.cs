@@ -6,7 +6,7 @@ namespace PizzaBox.Domain.Interfaces
 {
     public interface IStoreRepository<T>
     {
-        IEnumerable<T> GetStores();
+        IEnumerable<T> GetStores(int storeId = -1);
         void AddStore(T store);
         void ModifyStore(T store);
         void RemoveStore(int id);

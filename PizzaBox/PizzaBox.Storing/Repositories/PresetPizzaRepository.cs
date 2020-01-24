@@ -9,7 +9,7 @@ using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Storing.Repositories
 {
-    class PresetPizzaRepository : IPresetPizzaRepository<PresetPizza>
+    public class PresetPizzaRepository : IPresetPizzaRepository<PresetPizza>
     {
         PizzaBoxDbContext db;
 
@@ -39,10 +39,14 @@ namespace PizzaBox.Storing.Repositories
             }
         }
 
-        public IEnumerable<PresetPizza> GetPresetPizzas()
+        public IEnumerable<PresetPizza> GetPresetPizzas(int choice)
         {
-            var query = from p in db.PresetPizzas
-                        select Mapper.MapPresetPizza(p);
+            var query = (choice != -1)
+                        ? from p in db.PresetPizzas
+                          where p.PresetId == choice
+                          select Mapper.MapPresetPizza(p)
+                        : from p in db.PresetPizzas
+                          select Mapper.MapPresetPizza(p);
 
             return query;
         }

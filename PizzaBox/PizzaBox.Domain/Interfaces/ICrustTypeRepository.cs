@@ -6,7 +6,7 @@ namespace PizzaBox.Domain.Interfaces
 {
     public interface ICrustTypeRepository<T>
     {
-        IEnumerable<T> GetCrustTypes();
+        IEnumerable<T> GetCrustTypes(int crustId = -1);
         void AddCrust(T crust);
         void ModifyCrust(T crust);
         void RemoveCrust(int id);

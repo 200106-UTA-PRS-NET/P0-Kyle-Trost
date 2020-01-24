@@ -9,7 +9,7 @@ using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Storing.Repositories
 {
-    class StoreRepository : IStoreRepository<Store>
+    public class StoreRepository : IStoreRepository<Store>
     {
         PizzaBoxDbContext db;
 
@@ -39,10 +39,21 @@ namespace PizzaBox.Storing.Repositories
             }
         }
 
-        public IEnumerable<Store> GetStores()
+        public IEnumerable<Store> GetStores(int storeId)
         {
-            var query = from s in db.Stores
+            IEnumerable<Store> query;
+
+            if (storeId != -1)
+            {
+                query = from s in db.Stores
+                        where s.StoreId == storeId
                         select Mapper.MapStore(s);
+            }
+            else
+            {
+                query = from s in db.Stores
+                        select Mapper.MapStore(s);
+            }
 
             return query;
         }

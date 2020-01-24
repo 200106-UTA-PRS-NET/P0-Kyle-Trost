@@ -9,7 +9,7 @@ using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Storing.Repositories
 {
-    class CrustTypeRepository : ICrustTypeRepository<CrustType>
+    public class CrustTypeRepository : ICrustTypeRepository<CrustType>
     {
         PizzaBoxDbContext db;
 
@@ -39,10 +39,21 @@ namespace PizzaBox.Storing.Repositories
             }
         }
 
-        public IEnumerable<CrustType> GetCrustTypes()
+        public IEnumerable<CrustType> GetCrustTypes(int crustId)
         {
-            var query = from c in db.CrustTypes
+            IEnumerable<CrustType> query;
+
+            if (crustId != -1)
+            {
+                query = from c in db.CrustTypes
+                        where c.CrustId == crustId
                         select Mapper.MapCrustType(c);
+            }
+            else
+            {
+                query = from c in db.CrustTypes
+                        select Mapper.MapCrustType(c);
+            }
 
             return query;
         }

@@ -28,7 +28,7 @@ namespace PizzaBox.Storing.Repositories
         {
             //throw new NotImplementedException();
 
-            if(db.Users.Any(u => u.UserName == user.UserName) || user.UserName == null)
+            if (db.Users.Any(u => u.UserName == user.UserName) || user.UserName == null)
             {
                 Console.WriteLine($"User {user.UserName} already exists and cannot be added");
                 return;
@@ -42,10 +42,15 @@ namespace PizzaBox.Storing.Repositories
             }
         }
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<User> GetUsers(string user = null, string pass = null)
         {
-            var query = from u in db.Users
-                        select Mapper.MapUser(u);
+            var query = (user != null && pass != null)
+                        ? from u in db.Users
+                          where u.UserName == user && u.UserPass == pass
+                          select Mapper.MapUser(u)
+                        : from u in db.Users
+                          where u.UserName == user && u.UserPass == pass
+                          select Mapper.MapUser(u);
 
             return query;
         }

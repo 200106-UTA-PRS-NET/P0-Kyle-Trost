@@ -13,6 +13,7 @@ namespace PizzaBox.Domain.Abstracts
         public int? PizzaSize { get; set; }
         public int? PizzaCrust { get; set; }
         public decimal? TotalCost { get; set; }
+        public int PizzaId { get; set; }
 
         public virtual Orders Order { get; set; }
         public virtual CrustTypes PizzaCrustNavigation { get; set; }

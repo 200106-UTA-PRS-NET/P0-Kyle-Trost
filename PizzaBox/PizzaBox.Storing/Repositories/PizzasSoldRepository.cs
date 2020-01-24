@@ -10,7 +10,7 @@ using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Storing.Repositories
 {
-    class PizzasSoldRepository : IPizzasSoldRepository<PizzaSold>
+    public class PizzasSoldRepository : IPizzasSoldRepository<PizzaSold>
     {
         PizzaBoxDbContext db;
 
@@ -26,29 +26,40 @@ namespace PizzaBox.Storing.Repositories
 
         public void AddPizzaSold(PizzaSold pizza)
         {
-            //if (db.PresetPizzas.Any(p => p.PresetName == pizza.PresetName) || pizza.PresetName == null)
-            //{
-            //    Console.WriteLine($"Preset pizza {pizza.PresetName} already exists and cannot be added");
-            //    return;
-            //}
-            //else
-            //{
-            //    Console.WriteLine($"Adding preset pizza {pizza.PresetName}...");
-            //    db.Users.Add(Mapper.MapPresetPizza(pizza));
-            //    db.SaveChanges();
-            //    Console.WriteLine($"User {pizza.PresetName} added successfully");
-            //}
+            if (db.PizzasSold.Any(p => p.PizzaId == pizza.PizzaId))
+            {
+                Console.WriteLine($"Preset pizza {pizza.PizzaName} already exists and cannot be added");
+                return;
+            }
+            else
+            {
+                Console.WriteLine($"Adding pizza {pizza.PizzaName}...");
+                db.PizzasSold.Add(Mapper.MapPizzaSold(pizza));
+                db.SaveChanges();
+                Console.WriteLine($"Pizza {pizza.PizzaName} added successfully");
+            }
 
-            Console.WriteLine($"Adding pizza {pizza.PizzaName} to order...");
-            db.PizzasSold.Add(Mapper.MapPizzaSold(pizza));
-            db.SaveChanges();
-            Console.WriteLine($"Pizza {pizza.PizzaName} added successfully");
+            //Console.WriteLine($"Adding pizza {pizza.PizzaName} to order...");
+            //db.PizzasSold.Add(Mapper.MapPizzaSold(pizza));
+            //db.SaveChanges();
+            //Console.WriteLine($"Pizza {pizza.PizzaName} added successfully");
         }
 
-        public IEnumerable<PizzaSold> GetPizzasSold()
+        public IEnumerable<PizzaSold> GetPizzasSold(int storeId, int orderId)
         {
-            var query = from p in db.PizzasSold
+            IQueryable<PizzaSold> query;
+
+            if (orderId != -1)
+            {
+                query = from p in db.PizzasSold
+                        where p.OrderId == orderId
                         select Mapper.MapPizzaSold(p);
+            }
+            else
+            {
+                query = from p in db.PizzasSold
+                        select Mapper.MapPizzaSold(p);
+            }
 
             return query;
         }

@@ -32,17 +32,37 @@ namespace PizzaBox.Storing.Repositories
             }
             else
             {
-                Console.WriteLine($"Adding order {order.OrderId}...");
+                Console.WriteLine($"Adding order...");
                 db.Orders.Add(Mapper.MapOrder(order));
                 db.SaveChanges();
-                Console.WriteLine($"Order {order.OrderId} added successfully");
+                Console.WriteLine($"Order added successfully");
             }
         }
 
-        public IEnumerable<Order> GetOrders()
+        public IEnumerable<Order> GetOrders(int? storeId, int userId/*, bool sortByTimestamp*/)
         {
-            var query = from o in db.Orders
+            IQueryable<Order> query;
+
+            if(storeId != -1)
+            {
+                query = from o in db.Orders
+                        where o.StoreId == storeId
+                        orderby o.OrderTimestamp descending
                         select Mapper.MapOrder(o);
+            }
+            else if(userId != -1)
+            {
+                query = from o in db.Orders
+                        where o.UserId == userId
+                        orderby o.OrderTimestamp descending
+                        select Mapper.MapOrder(o);
+            }
+            else
+            {
+                query = from o in db.Orders
+                        orderby o.OrderTimestamp descending
+                        select Mapper.MapOrder(o);
+            }
 
             return query;
         }
