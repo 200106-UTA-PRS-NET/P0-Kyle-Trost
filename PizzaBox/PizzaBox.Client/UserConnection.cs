@@ -310,7 +310,9 @@ namespace PizzaBox.Client
                 var lastOrderTime = orders.First().OrderTimestamp;
                 var timeSpan = DateTime.Now - lastOrderTime.Value;
 
-                if (timeSpan.Hours < Globals.ORDER_INTERVAL)
+                //Console.WriteLine(timeSpan);
+
+                if (timeSpan.Days < Globals.ORDER_INTERVAL_DAYS)
                 {
                     return false;
                 }

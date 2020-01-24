@@ -10,7 +10,7 @@ namespace PizzaBox.Client
         public const decimal SALES_TAX = 0.08M;
         public const decimal MAX_ORDER_COST = 250.00M;
         public const int MAX_PIZZAS = 100;
-        public const int ORDER_INTERVAL = 24;
+        public const int ORDER_INTERVAL_DAYS = 1;
 
         static NumberFormatInfo nfi = new NumberFormatInfo();
 
